@@ -3,6 +3,7 @@ file = "magic"
 
 totalTrueGames = 0
 
+# The less brackers the greater the bit wizard
 
 def main(line):
     winningNumbersDict = {}
