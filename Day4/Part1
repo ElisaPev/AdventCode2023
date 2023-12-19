@@ -33,7 +33,6 @@ if __name__ == '__main__':
 
     for lines in txtFile:
         totalTrueGames = main(lines)
-        print(totalTrueGames)
 
         if totalTrueGames != 0:
             powerOf = totalTrueGames - 1
