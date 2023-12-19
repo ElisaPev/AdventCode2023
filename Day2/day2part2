@@ -1,5 +1,5 @@
 
-file = "D:\\Coding\\C++\\adventofcodeprog\\adventofcode\\adventofcode\\day2.txt"
+file = "magicBinary"
 
 
 def main(line):
