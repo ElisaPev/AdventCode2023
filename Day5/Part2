@@ -1,0 +1,61 @@
+# day 5 part 1
+import math
+
+file = "bitmagic"
+
+# ye humbled quickly
+
+def findSeeds(file):
+    with open(file) as f:
+        first_line = f.readline().strip('\n')
+    x = first_line.split(": ")
+    x.pop(0)
+    newx = x
+    newx = x[0].split(" ")
+    rangeMap = {}
+    startNum = 0
+    for i in range(len(newx)):
+        if i % 2 != 0:
+
+            endNum = math.ceil(int(newx[i])/2)
+            secondStartNum = startNum + endNum + 1
+            secondEndNum = endNum
+            rangeMap[startNum] = endNum
+            rangeMap[secondStartNum] = secondEndNum
+        startNum = int(newx[i])
+
+    return rangeMap
+
+if __name__ == '__main__':
+    print("Reading File")
+    txtFile = open(file, "r")
+    rangeMap = findSeeds(file)
+    foundMap = {}
+    sortNum = 0
+
+    for num in rangeMap:
+        foundMap[num] = False
+
+    for lines in txtFile:
+        if "seeds: " not in lines:
+                mapArr = lines.split(" ")
+                if 'map:\n' in mapArr:
+                    for i in foundMap:
+                        foundMap[i] = False
+
+                elif '\n' not in mapArr:
+                    for firstNum in rangeMap:
+                        if(foundMap[firstNum] == False and firstNum >= int(mapArr[1]) and rangeMap[firstNum] <= (int(mapArr[2])+int(mapArr[1]))-1):
+                            equivMapNum = int(mapArr[0])-int(mapArr[1])
+                            newNum = firstNum + equivMapNum
+                            rangeMap[newNum] = rangeMap[firstNum]
+                            del rangeMap[firstNum]
+                            del foundMap[firstNum]
+                            foundMap[newNum] = True
+                            sortNum = newNum
+
+    for firstNum in rangeMap:
+        if(firstNum < sortNum):
+            sortNum = firstNum
+    print(sortNum)
+    print(rangeMap)
