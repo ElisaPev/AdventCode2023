@@ -1,15 +1,9 @@
-# import pyparsing as pp
 # day 5 part 1
 import math
 
 file = "magicbits"
 
-
 # I should've started this the day it started
-
-
-def main(line):
-    print("hm")
 
 def findSeeds(file):
     with open(file) as f:
@@ -22,36 +16,30 @@ def findSeeds(file):
     seedList = []
     for num in newx:
         seedList.append(num)
-    seedList.sort()
-    return seedList
 
+    return seedList
 
 if __name__ == '__main__':
     print("Reading File")
     txtFile = open(file, "r")
     seedsList = findSeeds(file)
     foundList = []
+
     for num in seedsList:
         foundList.append(False)
 
-    lineNum = 0
     for lines in txtFile:
-        #mapNum = main(lines)
         if "seeds: " not in lines:
-                #print(lines)
                 mapArr = lines.split(" ")
                 if 'map:\n' in mapArr:
                     for i in range(len(foundList)):
                         foundList[i] = False
                 elif '\n' not in mapArr:
-                    print(mapArr)
                     for i in range(len(seedsList)):
                         if(foundList[i] == False and int(seedsList[i]) >= int(mapArr[1]) and int(seedsList[i]) <= (int(mapArr[2])+int(mapArr[1]))-1):
                             equivMapNum = int(mapArr[0])-int(mapArr[1])
                             seedsList[i] = int(seedsList[i]) + equivMapNum
                             foundList[i] = True
 
-                #print(mapArr)
-        #lineNum += 1
     seedsList.sort()
     print(seedsList)
