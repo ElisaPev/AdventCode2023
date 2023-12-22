@@ -57,6 +57,9 @@ if __name__ == '__main__':
     toBeAddedRanges = {}
     todelete = []
 
+    for num in rangeMap:
+        foundMap[num] = "False"
+
     for lines in txtFile:
         if "seeds: " not in lines:
                 #print(lines)
@@ -65,7 +68,8 @@ if __name__ == '__main__':
                 if 'map:\n' in mapArr:
                     #print(lines)
                     for num in rangeMap:
-                        foundMap[num] = "False"
+                        if not foundMap[num] == "Delete":
+                            foundMap[num] = "False"
                     #print(rangeMap)
                 elif '\n' not in mapArr:
                     for firstNum in rangeMap:
@@ -91,17 +95,17 @@ if __name__ == '__main__':
                         elif foundMap[firstNum] == "False" and firstNum > (int(mapArr[2]) + int(mapArr[1])) or int(rangeMap[firstNum]) < int(mapArr[1]):
                             print("left alone")
 
-                for firstNum in foundMap:
-                    if foundMap[firstNum] == "Delete":
-                        del rangeMap[firstNum]
-                        todelete.append(firstNum)
-                for firstNum in todelete:
-                    if foundMap[firstNum] == "Delete":
-                        del foundMap[firstNum]
+                #for firstNum in foundMap:
+                #    if foundMap[firstNum] == "Delete":
+                #        del rangeMap[firstNum]
+                #        todelete.append(firstNum)
+                #for firstNum in todelete:
+                #    if foundMap[firstNum] == "Delete":
+                #        del foundMap[firstNum]
 
                 for newNum in toBeAddedRanges:
                     rangeMap[newNum] = toBeAddedRanges[newNum]
-                    foundMap[newNum] = "False"
+                    foundMap[newNum] = "True"
                 toBeAddedRanges = {}
 
 
@@ -109,8 +113,24 @@ if __name__ == '__main__':
                             # if second part bigger than comparison then split?
     arrSort = []
     for firstNum in rangeMap:
-        arrSort.append(firstNum)
+        if not foundMap[firstNum] == "Delete":
+            arrSort.append(firstNum)
+            
+
 
     arrSort.sort()
     print("lowestNum = " + str(arrSort[0]))
     print(arrSort)
+        #print(foundMap)
+                #print(mapArr)
+        #lineNum += 1
+    #seedsList.sort()
+    #print(seedsList)
+    #print(rangeMap)
+# 2928126749
+# 203300829 too high - digits
+# 287563431
+#114724570 wrong
+#191448703 wrong
+#139204685 wrong
+# 84821304
