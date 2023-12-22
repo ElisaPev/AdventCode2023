@@ -2,7 +2,7 @@
 # day 5 part 1
 import math
 
-file = "C:\\Users\\elisa.pevere\\Documents\\EPrograms\\advcode\\day5Long.txt"
+file = "magic"
 
 
 # I should've started this the day it started
