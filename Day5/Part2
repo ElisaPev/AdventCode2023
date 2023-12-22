@@ -1,9 +1,16 @@
+# import pyparsing as pp
 # day 5 part 1
 import math
 
-file = "bitmagic"
+file = "C:\\Users\\elisa.pevere\\Documents\\EPrograms\\advcode\\day5Long.txt"
 
-# ye humbled quickly
+
+# I should've started this the day it started
+
+
+def main(line):
+    print("hm")
+
 
 def findSeeds(file):
     with open(file) as f:
@@ -19,43 +26,91 @@ def findSeeds(file):
 
             endNum = math.ceil(int(newx[i])/2)
             secondStartNum = startNum + endNum + 1
-            secondEndNum = endNum
-            rangeMap[startNum] = endNum
-            rangeMap[secondStartNum] = secondEndNum
+            rangeMap[startNum] = startNum + endNum
+            rangeMap[secondStartNum] = secondStartNum + endNum -1
+
         startNum = int(newx[i])
 
     return rangeMap
+
+
+def split(a, c, b, d):
+    print("splitting")
+    discreteRangeMap = {}
+    if a < c:
+        discreteRangeMap[a] = c
+        discreteRangeMap[c+1] = b
+    elif b > d:
+        discreteRangeMap[a] = d
+        discreteRangeMap[d + 1] = b
+    elif a < c and b > d:
+        print("nah")
+
+    return discreteRangeMap
+
 
 if __name__ == '__main__':
     print("Reading File")
     txtFile = open(file, "r")
     rangeMap = findSeeds(file)
     foundMap = {}
-    sortNum = 0
-
-    for num in rangeMap:
-        foundMap[num] = False
+    toBeAddedRanges = {}
+    todelete = []
 
     for lines in txtFile:
         if "seeds: " not in lines:
+                #print(lines)
                 mapArr = lines.split(" ")
-                if 'map:\n' in mapArr:
-                    for i in foundMap:
-                        foundMap[i] = False
 
+                if 'map:\n' in mapArr:
+                    #print(lines)
+                    for num in rangeMap:
+                        foundMap[num] = "False"
+                    #print(rangeMap)
                 elif '\n' not in mapArr:
                     for firstNum in rangeMap:
-                        if(foundMap[firstNum] == False and firstNum >= int(mapArr[1]) and rangeMap[firstNum] <= (int(mapArr[2])+int(mapArr[1]))-1):
+                        # all range nums are within the map range
+                        #if not foundMap[firstNum]:
+                        if foundMap[firstNum] == "False" and firstNum >= int(mapArr[1]) and rangeMap[firstNum] <= (int(mapArr[2])+int(mapArr[1])):
+
                             equivMapNum = int(mapArr[0])-int(mapArr[1])
+
                             newNum = firstNum + equivMapNum
-                            rangeMap[newNum] = rangeMap[firstNum]
+                            diffNum = rangeMap[firstNum] - firstNum
+                            foundMap[newNum] = "True"
+                            rangeMap[newNum] = newNum + diffNum
                             del rangeMap[firstNum]
                             del foundMap[firstNum]
-                            foundMap[newNum] = True
-                            sortNum = newNum
+                        # first range is before soil source range but second range is before soil source end rage
+                        elif foundMap[firstNum] == "False" and firstNum < (int(mapArr[2]) + int(mapArr[1])) and rangeMap[firstNum] > int(mapArr[1]):
+                            newSplit = split(firstNum, int(mapArr[1]), rangeMap[firstNum], int(mapArr[2]) + int(mapArr[1]))
+                            for newNum in newSplit:
+                                toBeAddedRanges[newNum] = newSplit[newNum]
+                            foundMap[firstNum] = "Delete"
 
+                        elif foundMap[firstNum] == "False" and firstNum > (int(mapArr[2]) + int(mapArr[1])) or int(rangeMap[firstNum]) < int(mapArr[1]):
+                            print("left alone")
+
+                for firstNum in foundMap:
+                    if foundMap[firstNum] == "Delete":
+                        del rangeMap[firstNum]
+                        todelete.append(firstNum)
+                for firstNum in todelete:
+                    if foundMap[firstNum] == "Delete":
+                        del foundMap[firstNum]
+
+                for newNum in toBeAddedRanges:
+                    rangeMap[newNum] = toBeAddedRanges[newNum]
+                    foundMap[newNum] = "False"
+                toBeAddedRanges = {}
+
+
+
+                            # if second part bigger than comparison then split?
+    arrSort = []
     for firstNum in rangeMap:
-        if(firstNum < sortNum):
-            sortNum = firstNum
-    print(sortNum)
-    print(rangeMap)
+        arrSort.append(firstNum)
+
+    arrSort.sort()
+    print("lowestNum = " + str(arrSort[0]))
+    print(arrSort)
